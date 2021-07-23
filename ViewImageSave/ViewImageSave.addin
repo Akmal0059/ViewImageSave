@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- ViewImageSave
+     https://inpad.ru
+     © Inpad, 2021
+	 
+	 The manifest file. -->
+<RevitAddIns>
+  <AddIn Type="Application">
+  	<AddInId>a7fde9e9-1da5-4591-8981-9708f1369af5</AddInId>
+    <Name>ViewImageSave</Name>
+    <Assembly>ViewImageSave/ViewImageSave.dll</Assembly>
+    <FullClassName>InpadPlugins.ViewImageSave.ExternalApplication</FullClassName>
+    <VendorId>ru.blogspot.revit-addins</VendorId>
+    <VendorDescription>Inpad, https://inpad.ru</VendorDescription>
+  </AddIn>
+</RevitAddIns>
