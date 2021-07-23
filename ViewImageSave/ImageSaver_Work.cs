@@ -59,57 +59,66 @@ namespace InpadPlugins
 
             try
             {
-                using (var tr = new Transaction(doc, tr_name))
+                //using (var tr = new Transaction(doc, tr_name))
+                //{
+
+                //    if (TransactionStatus.Started == tr.Start())
+                //    {
+
+                // ====================================
+                // TODO: delete these code rows and put
+                // your code here.
+                ImageSaverViewModel viewModel = new ImageSaverViewModel();
+                ImageSaverUI imageSaverUI = new ImageSaverUI();
+                imageSaverUI.DataContext = viewModel;
+                if (imageSaverUI.ShowDialog() == false)
+                    return false;
+
+                var views = new FilteredElementCollector(doc)
+                                     .OfClass(typeof(ViewDrafting))
+                                     .Cast<ViewDrafting>()
+                                     .ToList();
+                if (views.Count == 0)
                 {
-
-                    if (TransactionStatus.Started == tr.Start())
-                    {
-
-                        // ====================================
-                        // TODO: delete these code rows and put
-                        // your code here.
-                        ImageSaverViewModel viewModel = new ImageSaverViewModel();
-                        ImageSaverUI imageSaverUI = new ImageSaverUI();
-                        imageSaverUI.DataContext = viewModel;
-                        if (imageSaverUI.ShowDialog() == false)
-                            return false;
-
-                        var views = new FilteredElementCollector(doc)
-                                             .OfClass(typeof(ViewDrafting))
-                                             .Cast<ViewDrafting>()
-                                             .ToList();
-                        if (views.Count == 0)
-                        {
-                            MessageBox.Show("В этом документе нет чертёжных видов!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return false;
-                        }
-                        IList<ElementId> ImageExportList = new List<ElementId>(views.Select(x => x.Id));
-
-                        if (!Directory.Exists(viewModel.Path))
-                            Directory.CreateDirectory(viewModel.Path);
-
-                        var BilledeExportOptions = new ImageExportOptions
-                        {
-                            ZoomType = ZoomFitType.FitToPage,
-                            PixelSize = 1024,
-                            FilePath = viewModel.Path + "\\img",
-                            FitDirection = FitDirectionType.Horizontal,
-                            HLRandWFViewsFileType = ImageFileType.JPEGLossless,
-                            ImageResolution = ImageResolution.DPI_600,
-                            ExportRange = ExportRange.SetOfViews,
-                        };
-                        BilledeExportOptions.SetViewsAndSheets(ImageExportList);
-
-                        try
-                        {
-                            doc.ExportImage(BilledeExportOptions);
-                        }
-                        catch { }
-                        // ====================================
-
-                        return TransactionStatus.Committed == tr.Commit();
-                    }
+                    MessageBox.Show("В этом документе нет чертёжных видов!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
                 }
+                IList<ElementId> ImageExportList = new List<ElementId>(views.Select(x => x.Id));
+
+                if (!Directory.Exists(viewModel.Path))
+                    Directory.CreateDirectory(viewModel.Path);
+                UIView openedView = null;
+                foreach (Autodesk.Revit.DB.View view in views)
+                {
+                    openedView?.Close();
+                    ui_doc.ActiveView = view;
+                    var BilledeExportOptions = new ImageExportOptions
+                    {
+                        ViewName = view.Name,
+                        ZoomType = ZoomFitType.FitToPage,
+                        PixelSize = 1024,
+                        FilePath = viewModel.Path + $@"\{view.Id.IntegerValue}.jpg",
+                        FitDirection = FitDirectionType.Horizontal,
+                        HLRandWFViewsFileType = ImageFileType.JPEGLossless,
+                        ImageResolution = ImageResolution.DPI_600,
+                        //ExportRange = ExportRange.SetOfViews,
+                    };
+                    //BilledeExportOptions.SetViewsAndSheets(ImageExportList);
+
+                    try
+                    {
+                        doc.ExportImage(BilledeExportOptions);
+                    }
+                    catch { }
+                    openedView = ui_doc.GetOpenUIViews().Last();
+                }
+                openedView?.Close();
+
+                // ====================================
+
+                return true;//TransactionStatus.Committed == tr.Commit();
+                //    }
+                //}
             }
             catch (Exception ex)
             {
