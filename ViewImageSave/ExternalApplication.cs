@@ -10,16 +10,10 @@
  * 'ViewImageSave' (Revit add-in).
  */
 #region Namespaces
-using Autodesk.Revit.ApplicationServices;
-using Autodesk.Revit.Attributes;
-using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using InpadPlugins.Properties;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
@@ -27,8 +21,6 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Xml.Linq;
-using WPF = System.Windows;
 
 #endregion
 

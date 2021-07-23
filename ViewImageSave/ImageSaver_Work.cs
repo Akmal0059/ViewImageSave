@@ -9,29 +9,17 @@
  * command.
  */
 #region Namespaces
-using Autodesk.Revit.ApplicationServices;
-using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Autodesk.Revit.UI.Selection;
-using InpadPlugins.Properties;
+using InpadPlugins.ViewImageSave.ViewModels;
+using InpadPlugins.ViewImageSave.Views;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Resources;
-using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Interop;
-using System.Windows.Media.Imaging;
 using Application = Autodesk.Revit.ApplicationServices.Application;
 using MessageBox = System.Windows.Forms.MessageBox;
-using WPF = System.Windows;
-using InpadPlugins.ViewImageSave.Views;
-using InpadPlugins.ViewImageSave.ViewModels;
 
 #endregion
 

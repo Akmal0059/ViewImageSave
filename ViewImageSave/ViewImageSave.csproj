@@ -86,37 +86,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ExternalApplication.resx">
-      <DependentUpon>ExternalApplication.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ExternalApplication.ru.resx">
-      <DependentUpon>ExternalApplication.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="License.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="readme.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\imageIcon.png" />
     <Content Include="ViewImageSave.addin" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ExternalCommandAvailability.resx">
-      <DependentUpon>ExternalCommandAvailability.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ExternalCommandAvailability.ru.resx">
-      <DependentUpon>ExternalCommandAvailability.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ImageSaver.resx">
-      <DependentUpon>ImageSaver.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ImageSaver.ru.resx">
-      <DependentUpon>ImageSaver.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -124,8 +100,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\Button_image.png" />
-    <None Include="Resources\Button_tooltip_image.png" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

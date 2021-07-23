@@ -12,19 +12,7 @@ using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Autodesk.Revit.UI.Selection;
-using InpadPlugins.Properties;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Resources;
-using System.Windows.Interop;
-using System.Windows.Media.Imaging;
-using WPF = System.Windows;
 
 #endregion
 
