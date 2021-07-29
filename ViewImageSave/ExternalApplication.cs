@@ -11,7 +11,7 @@
  */
 #region Namespaces
 using Autodesk.Revit.UI;
-using InpadPlugins.Properties;
+using InpadPlugins.ViewImageSave.Properties;
 using System;
 using System.Drawing;
 using System.Reflection;
@@ -84,7 +84,7 @@ namespace InpadPlugins
             ResourceManager res_mng = new ResourceManager(
                   GetType());
             ResourceManager def_res_mng = new ResourceManager(
-                typeof(Properties.Resources));
+                typeof(ViewImageSave.Properties.Resources));
 
             Result result = Result.Succeeded;
 
@@ -126,6 +126,7 @@ namespace InpadPlugins
 
             optionsBtn.LargeImage = ImageSourceFromBitmap(Resources.imageIcon);
         }
+
         [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DeleteObject([In] IntPtr hObject);

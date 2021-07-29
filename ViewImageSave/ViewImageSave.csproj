@@ -89,6 +89,7 @@
     <Content Include="License.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\imageIcon1.png" />
     <None Include="Resources\imageIcon.png" />
     <Content Include="ViewImageSave.addin" />
   </ItemGroup>
@@ -97,6 +98,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.ru.resx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

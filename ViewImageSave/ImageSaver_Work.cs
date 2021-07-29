@@ -20,6 +20,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Application = Autodesk.Revit.ApplicationServices.Application;
 using MessageBox = System.Windows.Forms.MessageBox;
+using View = Autodesk.Revit.DB.View;
 
 #endregion
 
@@ -73,11 +74,31 @@ namespace InpadPlugins
                 imageSaverUI.DataContext = viewModel;
                 if (imageSaverUI.ShowDialog() == false)
                     return false;
-
-                var views = new FilteredElementCollector(doc)
-                                     .OfClass(typeof(ViewDrafting))
-                                     .Cast<ViewDrafting>()
+                List<View> views = new List<View>();
+                var allViews = new FilteredElementCollector(doc)
+                                     .WhereElementIsNotElementType()
+                                     .OfClass(typeof(View))
+                                     .Cast<View>()
                                      .ToList();
+                foreach(var view in allViews)
+                {
+                    if(view is ViewDrafting)
+                        views.Add(view);
+                    else
+                    {
+                        try
+                        {
+                            var viewFamilyType = doc.GetElement(view.GetTypeId()) as ViewFamilyType;
+                            if (viewFamilyType != null)
+                            {
+                                if(viewFamilyType.ViewFamily == ViewFamily.Legend)
+                                    views.Add(view);
+                            }
+                        }
+                        catch { }
+                    }
+                }
+
                 if (views.Count == 0)
                 {
                     MessageBox.Show("В этом документе нет чертёжных видов!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -88,7 +109,7 @@ namespace InpadPlugins
                 if (!Directory.Exists(viewModel.Path))
                     Directory.CreateDirectory(viewModel.Path);
                 UIView openedView = null;
-                foreach (Autodesk.Revit.DB.View view in views)
+                foreach (View view in views)
                 {
                     openedView?.Close();
                     ui_doc.ActiveView = view;
@@ -97,10 +118,11 @@ namespace InpadPlugins
                         ViewName = view.Name,
                         ZoomType = ZoomFitType.FitToPage,
                         PixelSize = 1024,
-                        FilePath = viewModel.Path + $@"\{view.Id.IntegerValue}.jpg",
+                        FilePath = viewModel.Path + $@"\{doc.Title}-{view.Id.IntegerValue}.jpg",
                         FitDirection = FitDirectionType.Horizontal,
-                        HLRandWFViewsFileType = ImageFileType.JPEGLossless,
-                        ImageResolution = ImageResolution.DPI_600,
+                        HLRandWFViewsFileType = ImageFileType.JPEGMedium,
+                        ImageResolution = ImageResolution.DPI_150,
+
                         //ExportRange = ExportRange.SetOfViews,
                     };
                     //BilledeExportOptions.SetViewsAndSheets(ImageExportList);
