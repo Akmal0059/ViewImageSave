@@ -82,7 +82,7 @@ namespace InpadPlugins
                                      .ToList();
                 foreach(var view in allViews)
                 {
-                    if(view is ViewDrafting)
+                    if (view is ViewDrafting)
                         views.Add(view);
                     else
                     {
@@ -91,7 +91,7 @@ namespace InpadPlugins
                             var viewFamilyType = doc.GetElement(view.GetTypeId()) as ViewFamilyType;
                             if (viewFamilyType != null)
                             {
-                                if(viewFamilyType.ViewFamily == ViewFamily.Legend)
+                                if (viewFamilyType.ViewFamily == ViewFamily.Legend)
                                     views.Add(view);
                             }
                         }
@@ -101,7 +101,7 @@ namespace InpadPlugins
 
                 if (views.Count == 0)
                 {
-                    MessageBox.Show("В этом документе нет чертёжных видов!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("В этом документе нет подходящих видов!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
                 IList<ElementId> ImageExportList = new List<ElementId>(views.Select(x => x.Id));
