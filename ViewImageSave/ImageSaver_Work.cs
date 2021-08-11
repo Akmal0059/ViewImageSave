@@ -10,6 +10,7 @@
  */
 #region Namespaces
 using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.ExtensibleStorage;
 using Autodesk.Revit.UI;
 using InpadPlugins.ViewImageSave.ViewModels;
 using InpadPlugins.ViewImageSave.Views;
@@ -111,6 +112,7 @@ namespace InpadPlugins
                 UIView openedView = null;
                 foreach (View view in views)
                 {
+                    StoreDataInView(doc, view);
                     openedView?.Close();
                     ui_doc.ActiveView = view;
                     var BilledeExportOptions = new ImageExportOptions
@@ -150,6 +152,40 @@ namespace InpadPlugins
             }
 
             return false;
+        }
+
+        void StoreDataInView(Document doc, View view)
+        {
+            using (Transaction createSchemaAndStoreData = new Transaction(doc, "tCreateAndStore"))
+            {
+                createSchemaAndStoreData.Start();
+
+                SchemaBuilder schemaBuilder = new SchemaBuilder(new Guid("720080CB-DA99-40DC-9415-E53F280AA1F0"));
+                schemaBuilder.SetReadAccessLevel(AccessLevel.Public); // allow anyone to read the object
+                schemaBuilder.SetWriteAccessLevel(AccessLevel.Public); // restrict writing to this vendor only
+                //schemaBuilder.SetVendorId("Inpad Dev"); // required because of restricted write-access
+                schemaBuilder.SetSchemaName("ViewStaticGuid");
+
+                // create a fields to store
+                FieldBuilder guidField = schemaBuilder.AddSimpleField("Guid", typeof(Guid));
+                FieldBuilder canDuplicateField = schemaBuilder.AddSimpleField("AllowsDuplicates", typeof(bool));
+                Schema schema = schemaBuilder.Finish(); // register the Schema object
+
+                Entity entity = new Entity(schema); // create an entity (object) for this schema (class)
+                                                    // get the field from the schema
+                Field fieldGuid = schema.GetField("Guid");
+                Field fieldAllowsDuplicates = schema.GetField("AllowsDuplicates");
+                // set the value for this entity
+                entity.Set<Guid>(fieldGuid, Guid.NewGuid());
+                entity.Set<bool>(fieldAllowsDuplicates, true);
+                view.SetEntity(entity); // store the entity in the element
+
+                // get the data back from the wall
+                Entity retrievedEntity = view.GetEntity(schema);
+                Guid retrievedData = retrievedEntity.Get<Guid>(schema.GetField("Guid"));
+
+                createSchemaAndStoreData.Commit();
+            }
         }
     }
 }
